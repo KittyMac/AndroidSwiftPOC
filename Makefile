@@ -3,7 +3,7 @@ APPLE_SDK := /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.
 NDK := /Volumes/EXTERNAL/ADE/crystax-ndk-10.3.1
 HOST_SYSTEM := darwin-x86
 
-SRC_FILES := $(addprefix jni/, hello-swift.c add.swift)
+SRC_FILES := $(addprefix jni/, ArbiterBridge.c Arbiter.swift)
 
 # Everything below this you shouldn't have to change
 
@@ -19,13 +19,13 @@ LDFLAGS := -shared -L$(NDK_SYSROOT)/usr/lib -lc
 OBJECTS := $(addsuffix .o,$(basename $(SRC_FILES)))
 LL_IRS := $(patsubst %.swift,%.ll, $(filter %.swift,$(SRC_FILES)))
 
-libs/armeabi-v7a/libhello-swift.so: $(OBJECTS)
+libs/armeabi-v7a/libarbiter.so: $(OBJECTS)
 	@echo "LD      $@"
 	@$(LD) $^ $(LDFLAGS) -o $@
 
 .PHONY: clean
 clean:
-	rm -f $(OBJECTS) $(LL_IRS) libs/armeabi-v7a/libhello-swift.so
+	rm -f $(OBJECTS) $(LL_IRS) libs/armeabi-v7a/libarbiter.so
 
 %.o: %.c
 	@echo "CC      $@"
@@ -37,7 +37,10 @@ clean:
 
 %.o: %.ll
 	@echo "LLC     $@"
-	@$(LLC) $(LLCFLAGS) $<
+	@$(LLC) $(LLCFLAGS) -relocation-model=pic $<
 
-debug:
+debug: libs/armeabi-v7a/libarbiter.so
+	ant debug
 	
+install: 
+	ant debug install
