@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 // Unfortunately this has to be hand-generated for now...
-#define SWIFT_ARBITER _TF7Arbiter7ArbiterFSSSS
+#define SWIFT_ARBITER TF7Arbiter7ArbiterFT7requestSS_SS
 
 
 char * SWIFT_ARBITER(char *);

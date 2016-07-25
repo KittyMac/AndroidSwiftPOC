@@ -23,8 +23,8 @@ public class Arbiter extends Activity
     }
 
 	// Native methods defined in Arbiter.c
-    public native String ArbiterMain(String json);
-
+	private static native String ArbiterMain(String name);
+	
     static {
 		
 		System.loadLibrary("c++_shared");
@@ -33,6 +33,8 @@ public class Arbiter extends Activity
 		System.loadLibrary("scui18n");
 		System.loadLibrary("swiftCore");
 		System.loadLibrary("swiftGlibc");
+		
+		//System.loadLibrary("swiftSwiftOnoneSupport");
 			
         System.loadLibrary("arbiter");
     }

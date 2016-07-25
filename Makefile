@@ -1,6 +1,6 @@
 # Set variables below
-APPLE_SDK := /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain
-NDK := /Volumes/EXTERNAL/ADE/crystax-ndk-10.3.1
+APPLE_SDK := /Volumes/EXTERNAL/AndroidSwift/XcodeDefault.xctoolchain
+NDK := /Volumes/EXTERNAL/AndroidSwift/crystax-ndk-10.3.1
 HOST_SYSTEM := darwin-x86
 
 SRC_FILES := $(addprefix jni/, ArbiterBridge.c Arbiter.swift)
@@ -10,7 +10,7 @@ SRC_FILES := $(addprefix jni/, ArbiterBridge.c Arbiter.swift)
 SWIFTC := $(APPLE_SDK)/usr/bin/swiftc
 NDK_SYSROOT := $(NDK)/platforms/android-13/arch-arm
 NDK_TOOLCHAIN := $(NDK)/toolchains/arm-linux-androideabi-4.9/prebuilt/$(HOST_SYSTEM)
-LLC := $(NDK)/toolchains/llvm-3.6/prebuilt/$(HOST_SYSTEM)/bin/llc
+LLC := $(NDK)/toolchains/llvm-3.7/prebuilt/$(HOST_SYSTEM)/bin/llc
 LLCFLAGS := -mtriple=armv7-none-linux-androideabi -filetype=obj
 CC := $(NDK_TOOLCHAIN)/bin/arm-linux-androideabi-gcc --sysroot=$(NDK_SYSROOT)
 LD := $(NDK_TOOLCHAIN)/bin/arm-linux-androideabi-ld
@@ -33,7 +33,7 @@ clean:
 
 %.ll: %.swift
 	@echo "SWIFTC  $@"
-	@$(SWIFTC) -parse-as-library -target armv7-apple-ios9.0 -emit-ir $< | grep -v "^!" > $@
+	$(SWIFTC) -parse-as-library -target armv7-apple-ios9.0 -emit-ir $< | sed '/source_filename/d' > $@
 
 %.o: %.ll
 	@echo "LLC     $@"
