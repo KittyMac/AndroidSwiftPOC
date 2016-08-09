@@ -11,10 +11,10 @@ SWIFTC := $(APPLE_SDK)/usr/bin/swiftc
 NDK_SYSROOT := $(NDK)/platforms/android-13/arch-arm
 NDK_TOOLCHAIN := $(NDK)/toolchains/arm-linux-androideabi-4.9/prebuilt/$(HOST_SYSTEM)
 LLC := $(NDK)/toolchains/llvm-3.7/prebuilt/$(HOST_SYSTEM)/bin/llc
-LLCFLAGS := -mtriple=armv7-none-linux-androideabi -filetype=obj
+LLCFLAGS := -relocation-model=pic -mtriple=armv7-none-linux-androideabi -filetype=obj
 CC := $(NDK_TOOLCHAIN)/bin/arm-linux-androideabi-gcc --sysroot=$(NDK_SYSROOT)
 LD := $(NDK_TOOLCHAIN)/bin/arm-linux-androideabi-ld
-LDFLAGS := -shared -L$(NDK_SYSROOT)/usr/lib -lc
+LDFLAGS := -shared --no-undefined -L$(NDK_SYSROOT)/usr/lib -lc -Llibs/armeabi-v7a -lswiftCore -lswiftGlibc
 
 OBJECTS := $(addsuffix .o,$(basename $(SRC_FILES)))
 LL_IRS := $(patsubst %.swift,%.ll, $(filter %.swift,$(SRC_FILES)))
@@ -37,7 +37,7 @@ clean:
 
 %.o: %.ll
 	@echo "LLC     $@"
-	@$(LLC) $(LLCFLAGS) -relocation-model=pic $<
+	@$(LLC) $(LLCFLAGS) $<
 
 debug: libs/armeabi-v7a/libarbiter.so
 	ant debug

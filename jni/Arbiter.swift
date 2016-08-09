@@ -1,3 +1,3 @@
-public func Arbiter(request: String) -> String {
-    return "Arbiter says, \"\(request) is granted\""
+public func Arbiter(utf8Input: [UInt8]) -> [UInt8] {
+    return utf8Input
 }

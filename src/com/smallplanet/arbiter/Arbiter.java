@@ -26,14 +26,14 @@ public class Arbiter extends Activity
 	private static native String ArbiterMain(String name);
 	
     static {
-		
+		/*
 		System.loadLibrary("c++_shared");
 		System.loadLibrary("scudata");
 		System.loadLibrary("scuuc");
 		System.loadLibrary("scui18n");
 		System.loadLibrary("swiftCore");
 		System.loadLibrary("swiftGlibc");
-		
+		*/
 		//System.loadLibrary("swiftSwiftOnoneSupport");
 			
         System.loadLibrary("arbiter");
